@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 24px;
+            animation: slideDown 1s ease-out;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            background-color: #f9f9f9;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: fadeInUp 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        li:nth-child(even) {
+            background-color: #e6e6e6;
+        }
+
+        .completed {
+            text-decoration: line-through;
+            color: #28a745;
+        }
+
+        .not-completed {
+            color: #dc3545;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            font-weight: bold;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>To-Do List</h1>
+        <ul>
+            {% for todo in todos %}
+                <li class="{% if todo.completed %}completed{% else %}not-completed{% endif %}">
+                    {{ todo.title }} - {{ todo.description }} 
+                    - {% if todo.completed %}
+                        <span class="completed">Completed</span>
+                    {% else %}
+                        <a href="{% url 'complete_todo' todo.id %}" class="btn-complete">Mark as Completed</a>
+                    {% endif %}
+                    <a href="{% url 'delete_todo' todo.id %}" class="btn-delete">Delete</a>
+                </li>
+            {% empty %}
+                <li>No to-do items found.</li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'add_todo' %}">Add To-Do</a>
+    </div>
+</body>
+</html>
